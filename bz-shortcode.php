@@ -27,13 +27,23 @@
 
 
 function wpbz_make_bugzilla_link( $attrs ){
+
   $bz_api_url = 'https://bugzilla.mozilla.org/rest/bug/';
   $bz_web_url = 'https://bugzilla.mozilla.org/show_bug.cgi?id=';
-  extract( shortcode_atts( array( 'bug_id'=>'' ) , $attrs ));
+
+  extract(shortcode_atts( array( 'bug_id'=>'') , $attrs ));
+
   $response = wp_remote_get($bz_api_url.$bug_id);
-  $json = wp_remote_retrieve_body(&$response);
-  $data = json_decode($json, true);
-  return '<a href="'.$bz_web_url.$bug_id.'">Bug '. $bug_id . '</a> &ndash; '. $data['bugs'][0]['summary'];
+
+  if (is_wp_error($response)) {
+    $error_message = $response->get_error_message();
+    return '<a href="'.$bz_web_url.$bug_id'">Bug '. $bug_id . '</a>';
+  }
+  else {
+    $json = wp_remote_retrieve_body(&$response);
+    $data = json_decode($json, true);
+    return '<a href="'.$bz_web_url.$bug_id.'">Bug '. $bug_id . '</a> &ndash; '. $data['bugs'][0]['summary'];
+  }
 }
 
 add_shortcode('bugzilla','wpbz_make_bugzilla_link');

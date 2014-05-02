@@ -18,3 +18,8 @@ Insert the following into posts where you want to generate links to bugzilla.moz
 
 [bugzilla bug_id=""]
 
+## TODO
+
+* Add settings and allow user to specfic bugzilla web and api urls
+* Allow user to customize output
+* Add error checking
