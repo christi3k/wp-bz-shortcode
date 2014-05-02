@@ -37,12 +37,17 @@ function wpbz_make_bugzilla_link( $attrs ){
 
   if (is_wp_error($response)) {
     $error_message = $response->get_error_message();
-    return '<a href="'.$bz_web_url.$bug_id'">Bug '. $bug_id . '</a>';
+    return '<a href="'.$bz_web_url.$bug_id.'">Bug '. $bug_id . '</a>';
   }
   else {
     $json = wp_remote_retrieve_body(&$response);
     $data = json_decode($json, true);
-    return '<a href="'.$bz_web_url.$bug_id.'">Bug '. $bug_id . '</a> &ndash; '. $data['bugs'][0]['summary'];
+    if ($data['error']){
+      return 'Error: ' . $data['message'];
+    }
+    else {
+      return '<a href="'.$bz_web_url.$bug_id.'">Bug '. $bug_id . '</a> &ndash; '. $data['bugs'][0]['summary'];
+    }
   }
 }
 
