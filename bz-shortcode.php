@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/christi3k/wp-bz-shortcode
  * Description: Adds a shortcode for generating links to Mozilla Bugzilla
  * Version: 0.1
- * Author: Christie Koehler (ck@christi3k.net)
+ * Author: Christie Koehler
  * Author URI: http://christiekoehler.com
  * License: GPL3
  */
@@ -33,7 +33,7 @@ function wpbz_make_bugzilla_link( $attrs ){
   $response = wp_remote_get($bz_api_url.$bug_id);
   $json = wp_remote_retrieve_body(&$response);
   $data = json_decode($json, true);
-  return '<a href="'$bug_web_url.$bug_id.'">Bug '. $bug_id . '</a> &ndash; '. $data['bugs'][0]['summary'] ;
+  return '<a href="'.$bz_web_url.$bug_id.'">Bug '. $bug_id . '</a> &ndash; '. $data['bugs'][0]['summary'];
 }
 
 add_shortcode('bugzilla','wpbz_make_bugzilla_link');
